@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Screen Width Sliding Panels</title>
+    <style>
+        /* Basic styling */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+        .slider {
+            display: flex;
+            overflow: hidden;
+            height: 50vh; /* Slider covers half of the viewport height */
+            width: 100vw; /* Slider covers full viewport width */
+            position: relative;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+            width: 400%; /* 4 slides, each taking 100% of slider width */
+        }
+        .slide {
+            flex: 0 0 100vw; /* Each slide takes up the full viewport width */
+            height: 50vh; /* Each slide takes up half of the viewport height */
+            box-sizing: border-box;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+        }
+        input[type="radio"] {
+            display: none;
+        }
+        label {
+            position: absolute;
+            top: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1;
+        }
+        label.left {
+            left: 10px;
+        }
+        label.right {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <input type="radio" name="slider" id="slide1" checked>
+        <input type="radio" name="slider" id="slide2">
+        <input type="radio" name="slider" id="slide3">
+        <input type="radio" name="slider" id="slide4">
+        
+        <div class="slides">
+            <div class="slide">Panel 1 Content</div>
+            <div class="slide">Panel 2 Content</div>
+            <div class="slide">Panel 3 Content</div>
+            <div class="slide">Panel 4 Content</div>
+        </div>
+        
+        <label for="slide1" class="left">&#10094;</label>
+        <label for="slide2" class="right">&#10095;</label>
+        <label for="slide3" class="right">&#10095;</label>
+        <label for="slide4" class="right">&#10095;</label>
+    </div>
+
+    <script>
+        // JavaScript to handle automatic sliding
+        const slides = document.querySelector('.slides');
+        const totalSlides = 4; // Number of slides
+        let currentIndex = 0;
+
+        function showNextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        setInterval(showNextSlide, 3000); // Change slide every 3 seconds
+    </script>
+</body>
+</html>
