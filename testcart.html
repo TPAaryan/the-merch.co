@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .confirmation-box {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        .confirmation-box img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        .back-button {
+            padding: 10px 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-box" id="confirmation">
+        <h1>Confirmation</h1>
+        <img id="itemImage" src="" alt="Item Image">
+        <p id="itemTitle"></p>
+        <p id="itemPrice"></p>
+    </div>
+    
+    <button class="back-button" onclick="goBack()">Back to Shop</button>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        window.onload = function() {
+            const title = getQueryParam('title');
+            const price = getQueryParam('price');
+            const imgUrl = getQueryParam('imgUrl');
+
+            if (title && price && imgUrl) {
+                document.getElementById('itemTitle').textContent = `You added: ${title}`;
+                document.getElementById('itemPrice').textContent = `Price: $${price}`;
+                document.getElementById('itemImage').src = imgUrl;
+            } else {
+                document.getElementById('confirmation').innerHTML = "<p>No item details available.</p>";
+            }
+        };
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

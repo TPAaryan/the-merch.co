@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to Cart Confirmation</title>
+    <style>
+        /* Basic styling for the confirmation window */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+        .confirmation-window {
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-top: 50px;
+        }
+        .confirmation-window img {
+            width: 80px; /* Thumbnail size */
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .button {
+            background-color: red;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="confirmation-window">
+        <h2>Item Added to Cart!</h2>
+        <img id="itemThumbnail" src="" alt="Item Thumbnail">
+        <p id="confirmationDetails"></p>
+        <button class="button" id="viewCartButton">View Cart</button>
+        <button class="button" id="continueShoppingButton">Continue Shopping</button>
+    </div>
+
+    <script>
+        // Extract URL parameters and update the confirmation window
+        const params = new URLSearchParams(window.location.search);
+        const title = params.get('title');
+        const size = params.get('size');
+        const price = params.get('price');
+        const imgUrl = params.get('imgUrl');
+
+        document.getElementById('itemThumbnail').src = imgUrl || 'default-image.jpg'; // Use a default image if none is provided
+        document.getElementById('confirmationDetails').innerHTML = `Title: ${title || 'N/A'}<br>Size: ${size || 'N/A'}<br>Price: $${price || '0.00'}`;
+
+        // Set the buttons to redirect with the same parameters
+        document.getElementById('viewCartButton').onclick = () => {
+            window.location.href = `cart.html?title=${encodeURIComponent(title)}&size=${encodeURIComponent(size)}&price=${encodeURIComponent(price)}&imgUrl=${encodeURIComponent(imgUrl)}`;
+        };
+
+        document.getElementById('continueShoppingButton').onclick = () => {
+            window.location.href = `index.html?title=${encodeURIComponent(title)}&size=${encodeURIComponent(size)}&price=${encodeURIComponent(price)}&imgUrl=${encodeURIComponent(imgUrl)}`;
+        };
+    </script>
+
+</body>
+</html>

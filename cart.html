@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f2f2f2, #e0e0e0);
+            color: #333;
+        }
+        .cart-container, .suggestions-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .cart-header, .suggestions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff4d4d;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff4d4d, #cc0000);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+        }
+        .cart-header h1, .suggestions-header h2 {
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        .cart-header h1 {
+            font-size: 2.5rem;
+        }
+        .cart-item, .suggestion-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .cart-item img, .suggestion-item img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 20px;
+            border: 3px solid #ff4d4d;
+        }
+        .cart-item-details, .suggestion-item-details {
+            flex: 1;
+        }
+        .cart-item-title, .suggestion-item-title {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .cart-item-price, .suggestion-item-price {
+            font-size: 1.1rem;
+            color: #ff4d4d;
+            margin: 5px 0;
+        }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        .quantity-control button {
+            background: #ff4d4d;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        .quantity-control input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 5px;
+            font-size: 1rem;
+            margin: 0 5px;
+        }
+        .remove-button {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .remove-button:hover {
+            background: #cc0000;
+        }
+        .size-selection {
+            margin: 10px 0;
+        }
+        .size-selection select {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+        .cart-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid #ff4d4d;
+            padding-top: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .cart-footer .total {
+            font-size: 1.8rem;
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+        .checkout-button {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .checkout-button:hover {
+            background: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>Your Cart</h1>
+        </div>
+        <div id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="total">Total: $0.00</div>
+            <button class="checkout-button">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <div class="suggestions-container">
+        <div class="suggestions-header">
+            <h2>Suggested for You</h2>
+        </div>
+        <div class="suggestions-grid">
+            <div class="suggestion-item" data-price="12.00">
+                <img src="suggestion1.jpg" alt="Suggestion 1">
+                <div class="suggestion-item-details">
+                    <div class="suggestion-item-title">Suggestion 1 Title</div>
+                    <div class="suggestion-item-price">$12.00</div>
+                    <div class="size-selection">
+                        <label for="size">Size:</label>
+                        <select>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                        </select>
+                    </div>
+                    <div class="quantity-control">
+                        <button onclick="changeQuantity(this, -1)">-</button>
+                        <input type="number" value="1" min="1" onchange="updateCartTotal()">
+                        <button onclick="changeQuantity(this, 1)">+</button>
+                    </div>
+                    <button class="remove-button" onclick="removeSuggestion(this)">Remove</button>
+                    <button onclick="addToCart('Suggestion 1 Title', '12.00', 'suggestion1.jpg', this)">Add to Cart</button>
+                </div>
+            </div>
+            <div class="suggestion-item" data-price="18.00">
+                <img src="suggestion2.jpg" alt="Suggestion 2">
+                <div class="suggestion-item-details">
+                    <div class="suggestion-item-title">Suggestion 2 Title</div>
+                    <div class="suggestion-item-price">$18.00</div>
+                    <div class="size-selection">
+                        <label for="size">Size:</label>
+                        <select>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                        </select>
+                    </div>
+                    <div class="quantity-control">
+                        <button onclick="changeQuantity(this, -1)">-</button>
+                        <input type="number" value="1" min="1" onchange="updateCartTotal()">
+                        <button onclick="changeQuantity(this, 1)">+</button>
+                    </div>
+                    <button class="remove-button" onclick="removeSuggestion(this)">Remove</button>
+                    <button onclick="addToCart('Suggestion 2 Title', '18.00', 'suggestion2.jpg', this)">Add to Cart</button>
+                </div>
+            </div>
+            <!-- Add more suggestions as needed -->
+        </div>
+    </div>
+
+    <script>
+        function getURLParameters() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                title: params.get('title'),
+                size: params.get('size'),
+                price: params.get('price'),
+                imgUrl: params.get('imgUrl'),
+            };
+        }
+
+        function addItemFromURL() {
+            const { title, price, imgUrl } = getURLParameters();
+            if (title && price) {
+                addToCart(title, price, imgUrl);
+            }
+        }
+
+        function addToCart(title, price, imgUrl, button) {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartItem = document.createElement('div');
+            cartItem.classList.add('cart-item');
+            cartItem.innerHTML = `
+                <img src="${imgUrl || 'default-image.jpg'}" alt="${title}">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">${title}</div>
+                    <div class="cart-item-price">$${price}</div>
+                    <div class="size-selection">
+                        <label for="size">Size:</label>
+                        <select>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                        </select>
+                    </div>
+                    <div class="quantity-control">
+                        <button onclick="changeQuantity(this, -1)">-</button>
+                        <input type="number" value="1" min="1" onchange="updateCartTotal()">
+                        <button onclick="changeQuantity(this, 1)">+</button>
+                    </div>
+                </div>
+                <button class="remove-button" onclick="removeCartItem(this)">Remove</button>
+            `;
+            cartItemsContainer.appendChild(cartItem);
+            updateCartTotal();
+        }
+
+        function changeQuantity(button, change) {
+            const input = button.parentElement.querySelector('input[type="number"]');
+            let currentValue = parseInt(input.value, 10);
+            currentValue += change;
+            if (currentValue < 1) currentValue = 1;
+            input.value = currentValue;
+            updateCartTotal();
+        }
+
+        function removeSuggestion(button) {
+            button.closest('.suggestion-item').remove();
+        }
+
+        function removeCartItem(button) {
+            button.closest('.cart-item').remove();
+            updateCartTotal();
+        }
+
+        function updateCartTotal() {
+            const cartItems = document.querySelectorAll('.cart-item');
+            let total = 0;
+
+            cartItems.forEach(item => {
+                const price = parseFloat(item.querySelector('.cart-item-price').textContent.replace('$', ''));
+                const quantity = parseInt(item.querySelector('input[type="number"]').value, 10);
+                total += price * quantity;
+            });
+
+            document.querySelector('.total').textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        window.onload = addItemFromURL;
+    </script>
+</body>
+</html>
